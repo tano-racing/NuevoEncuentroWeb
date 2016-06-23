@@ -1,0 +1,13 @@
+{
+    "name": "nofuemagia/nuevo-o-r-m",
+    "description": "Description of project Nuevo ORM.",
+    "authors": [
+        {
+            "name": "Julian Lionti",
+            "email": "racinglocura07@gmail.com"
+        }
+    ],
+    "require": {
+        "doctrine/orm": "*" 
+    }
+}
