@@ -5,22 +5,35 @@
  * */
 class Actividades {
 
-    /** @Id @Column(type="integer") * */
+    /**
+     * @Id @Column(type="integer")
+     * @GeneratedValue
+     */
     protected $idActividad;
-    
-    /** $idActividad @Column(type="string") * */
+
+    /**
+     * @Column(type="string", unique=true)
+     */
     protected $nombre;
-    
-    /** $idActividad @Column(type="string") * */
+
+    /**
+     * @Column(type="string") 
+     */
     protected $descripcion;
-    
-    /** $idActividad @Column(type="integer") * */
+
+    /**
+     * @Column(type="integer") 
+     */
     protected $cuando;
-    
-    /** $idActividad @Column(type="integer") * */
+
+    /**
+     * @Column(type="integer") 
+     */
     protected $repeticion;
-    
-    /** $idActividad @Column(type="boolean") * */
+
+    /**
+     * @Column(type="boolean") 
+     */
     protected $esTaller;
 
     function getIdActividad() {
@@ -33,6 +46,10 @@ class Actividades {
 
     function getDescripcion() {
         return $this->descripcion;
+    }
+
+    function getImagen() {
+        return "actividad-$this->idActividad.jpg";
     }
 
     function getCuando() {

@@ -6,24 +6,24 @@
  * and open the template in the editor.
  */
 require_once '../../vendor/autoload.php';
-require_once "../../backend//config.php";
 require_once "../../entities/Usuarios.php";
-require_once "../../entities/Actividades.php";
+require_once "../../backend/config.php";
+
 
 if (filter_has_var(INPUT_GET, "fid")) {
     $fid = filter_input(INPUT_GET, "fid");
 
     $usuariosRepo = $entityManager->getRepository('Usuarios');
-    $Usuarios = $usuariosRepo->findAll();
+    $usuarios = $usuariosRepo->findAll();
 
     $result = array();
-    foreach ($Usuarios as $Usuario) {
+    foreach ($usuarios as $usuario) {
         $result[] = Array(
-            "idUsuario" => $Usuario->getIdUsuario(),
-            "nombreApellido" => $Usuario->getNombreApellido(),
-            "email" => $Usuario->getEmail(),
-            "facebookId" => $Usuario->getFacebookId(),
-            "creadoEl" => $Usuario->getCreadoEl()
+            "idUsuario" => $usuario->getIdUsuario(),
+            "nombreApellido" => $usuario->getNombreApellido(),
+            "email" => $usuario->getEmail(),
+            "facebookId" => $usuario->getFacebookId(),
+            "creadoEl" => $usuario->getCreadoEl()
         );
     }
 

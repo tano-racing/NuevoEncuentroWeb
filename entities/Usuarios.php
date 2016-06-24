@@ -1,27 +1,41 @@
 <?php
+
 /**
  * @Entity @Table(name="usuarios")
- **/
-class Usuarios{
-    
-    /** @Id @Column(type="integer") * */
+ * */
+class Usuarios {
+
+    /**
+     * @Id @Column(type="integer")
+     * @GeneratedValue
+     */
     protected $idUsuario;
-    
-    /** $idActividad @Column(type="string") * */
+
+    /**
+     * @Column(type="string", unique=true)
+     */
     protected $facebookId;
-    
-    /** $idActividad @Column(type="string") * */
+
+    /** 
+     * @Column(type="string") 
+     */
     protected $nombreApellido;
-    
-    /** $idActividad @Column(type="string") * */
+
+    /** 
+     * @Column(type="string") 
+     */
     protected $email;
-    
-    /** $idActividad @Column(type="string") * */
+
+    /** 
+     * @Column(type="string") 
+     */
     protected $registrationId;
-    
-    /** $idActividad @Column(type="date") * */
+
+    /** 
+     * @Column(type="datetime") 
+     */
     protected $creadoEl;
-    
+
     function getIdUsuario() {
         return $this->idUsuario;
     }
@@ -43,7 +57,7 @@ class Usuarios{
     }
 
     function getCreadoEl() {
-        return $this->creadoEl;
+        return $this->creadoEl->format('Y-m-d H:i:s');;
     }
 
     function setIdUsuario($idUsuario) {
@@ -69,4 +83,7 @@ class Usuarios{
     function setCreadoEl($creadoEl) {
         $this->creadoEl = $creadoEl;
     }
+
+
+
 }
