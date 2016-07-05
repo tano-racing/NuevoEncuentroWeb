@@ -39,7 +39,7 @@ class Metodos {
         return $result;
     }
 
-    public static function resize($fn, $detino) {
+    public static function resize($fn, $id, $esTaller) {
 
         $maxwidth = 800;
         $maxheight = 800;
@@ -55,11 +55,16 @@ class Metodos {
             $thumbwidth = $width;
         }
 
+        ini_set('display_errors', 1); // set to 0 when not debugging
+        error_reporting(E_ALL);
+
         $imgbuffer = imagecreatetruecolor($thumbwidth, $thumbheight);
         $image = imagecreatefromjpeg($fn);
         imagecopyresampled($imgbuffer, $image, 0, 0, 0, 0, $thumbwidth, $thumbheight, $width, $height);
         imageinterlace($imgbuffer);
-        $output = imagejpeg($imgbuffer, $detino, 100);
+
+        $salida = __DIR__ . "/../imagenes/" . ($esTaller ? "taller" : "actividad" ) . "-$id.jpg";
+        $output = imagejpeg($imgbuffer, $salida, 100);
         imagedestroy($imgbuffer);
         return $output;
     }

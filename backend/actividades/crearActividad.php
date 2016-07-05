@@ -12,14 +12,15 @@ require_once "../../backend/config.php";
 require_once "../../backend/metodos.php";
 
 if (filter_input(INPUT_SERVER, "REQUEST_METHOD") === "POST") {
-    
+
     $nombre = filter_input(INPUT_POST, 'nombre');
     $descripcion = filter_input(INPUT_POST, 'descripcion');
     $imagen = $_FILES['imagen_img']['tmp_name'];
     $cuando = filter_input(INPUT_POST, 'cuando');
     $repeticion = filter_input(INPUT_POST, 'repeticion');
-    $esTaller = filter_input(INPUT_GET, 'esTaller');
-    
+    $esTaller = filter_var(filter_input(INPUT_GET, 'esTaller'), FILTER_VALIDATE_BOOLEAN);
+
+
     $actividadesRepo = $entityManager->getRepository('Actividades');
     $actividad = $actividadesRepo->findOneBy(array('nombre' => $nombre));
     if (!$actividad) {
@@ -38,9 +39,8 @@ if (filter_input(INPUT_SERVER, "REQUEST_METHOD") === "POST") {
             $entityManager->flush();
 
             $lastid = $actividad->getIdActividad();
-            $destino = "../../imagenes/actividad-$lastid.jpg";
 
-            Metodos::resize($imagen, $destino);
+            Metodos::resize($imagen, $lastid, $esTaller);
             Metodos::enviar($entityManager, "", "Actividades");
 
             $json = array("error" => false, "mensaje" => $msg);

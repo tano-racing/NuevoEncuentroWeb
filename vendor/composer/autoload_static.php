@@ -18,9 +18,7 @@ class ComposerStaticInit30fed9a1907a65d0708af3328698aa71
         ),
         'D' => 
         array (
-            'Doctrine\\Instantiator\\' => 22,
             'Doctrine\\Common\\Cache\\' => 22,
-            'Doctrine\\Common\\' => 16,
         ),
     );
 
@@ -33,17 +31,9 @@ class ComposerStaticInit30fed9a1907a65d0708af3328698aa71
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
         ),
-        'Doctrine\\Instantiator\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator',
-        ),
         'Doctrine\\Common\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/cache/lib/Doctrine/Common/Cache',
-        ),
-        'Doctrine\\Common\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/doctrine/common/lib/Doctrine/Common',
         ),
     );
 
@@ -73,6 +63,10 @@ class ComposerStaticInit30fed9a1907a65d0708af3328698aa71
             'Doctrine\\Common\\Annotations\\' => 
             array (
                 0 => __DIR__ . '/..' . '/doctrine/annotations/lib',
+            ),
+            'Doctrine\\Common\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/doctrine/common/lib',
             ),
         ),
     );

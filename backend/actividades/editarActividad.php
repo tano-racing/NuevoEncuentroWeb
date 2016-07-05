@@ -21,7 +21,7 @@ if (filter_input(INPUT_SERVER, "REQUEST_METHOD") === "POST") {
     }
     $cuando = filter_input(INPUT_POST, 'cuando');
     $repeticion = filter_input(INPUT_POST, 'repeticion');
-    $esTaller = filter_input(INPUT_POST, 'esTaller');
+    $esTaller = filter_var(filter_input(INPUT_GET, 'esTaller'), FILTER_VALIDATE_BOOLEAN);
 
     $actividadesRepo = $entityManager->getRepository('Actividades');
     $actividad = $actividadesRepo->find($idActividad);
@@ -38,11 +38,11 @@ if (filter_input(INPUT_SERVER, "REQUEST_METHOD") === "POST") {
 
             if (isset($_FILES['imagen_img'])) {
                 $lastid = $actividad->getIdActividad();
-                $destino = "../../imagenes/actividad-$lastid.jpg";
+                $destino = "../imagenes/actividad-$lastid.jpg";
 
-                Metodos::resize($imagen, $destino);
+                Metodos::resize($imagen, $lastid, $esTaller);
             }
-            Metodos::enviar($entityManager, "", "Actividades");
+            Metodos::enviar($entityManager, "", "Actividades", -1);
 
             $json = array("error" => false, "mensaje" => "Actividad actualizada");
         } catch (Exception $ex) {

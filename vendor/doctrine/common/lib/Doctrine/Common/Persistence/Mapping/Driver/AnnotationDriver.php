@@ -20,6 +20,7 @@
 namespace Doctrine\Common\Persistence\Mapping\Driver;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 
 /**
@@ -45,14 +46,14 @@ abstract class AnnotationDriver implements MappingDriver
      *
      * @var array
      */
-    protected $paths = [];
+    protected $paths = array();
 
     /**
      * The paths excluded from path where to look for mapping files.
      *
      * @var array
      */
-    protected $excludePaths = [];
+    protected $excludePaths = array();
 
     /**
      * The file extension of mapping documents.
@@ -73,7 +74,7 @@ abstract class AnnotationDriver implements MappingDriver
      *
      * @var array
      */
-    protected $entityAnnotationClasses = [];
+    protected $entityAnnotationClasses = array();
 
     /**
      * Initializes a new AnnotationDriver that uses the given AnnotationReader for reading
@@ -200,8 +201,8 @@ abstract class AnnotationDriver implements MappingDriver
             throw MappingException::pathRequired();
         }
 
-        $classes = [];
-        $includedFiles = [];
+        $classes = array();
+        $includedFiles = array();
 
         foreach ($this->paths as $path) {
             if ( ! is_dir($path)) {

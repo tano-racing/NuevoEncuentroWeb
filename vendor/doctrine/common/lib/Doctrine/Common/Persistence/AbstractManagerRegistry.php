@@ -19,6 +19,8 @@
 
 namespace Doctrine\Common\Persistence;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+
 /**
  * Abstract implementation of the ManagerRegistry contract.
  *
@@ -141,7 +143,7 @@ abstract class AbstractManagerRegistry implements ManagerRegistry
      */
     public function getConnections()
     {
-        $connections = [];
+        $connections = array();
         foreach ($this->connections as $name => $id) {
             $connections[$name] = $this->getService($id);
         }
@@ -190,18 +192,13 @@ abstract class AbstractManagerRegistry implements ManagerRegistry
     {
         // Check for namespace alias
         if (strpos($class, ':') !== false) {
-            list($namespaceAlias, $simpleClassName) = explode(':', $class, 2);
+            list($namespaceAlias, $simpleClassName) = explode(':', $class);
             $class = $this->getAliasNamespace($namespaceAlias) . '\\' . $simpleClassName;
         }
 
         $proxyClass = new \ReflectionClass($class);
-
         if ($proxyClass->implementsInterface($this->proxyInterfaceName)) {
-            if (! $parentClass = $proxyClass->getParentClass()) {
-                return null;
-            }
-
-            $class = $parentClass->getName();
+            $class = $proxyClass->getParentClass()->getName();
         }
 
         foreach ($this->managers as $id) {
@@ -226,7 +223,7 @@ abstract class AbstractManagerRegistry implements ManagerRegistry
      */
     public function getManagers()
     {
-        $dms = [];
+        $dms = array();
         foreach ($this->managers as $name => $id) {
             $dms[$name] = $this->getService($id);
         }

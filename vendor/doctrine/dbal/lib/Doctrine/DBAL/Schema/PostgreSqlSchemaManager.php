@@ -19,9 +19,6 @@
 
 namespace Doctrine\DBAL\Schema;
 
-use Doctrine\DBAL\Exception\DriverException;
-use Doctrine\DBAL\Types\Type;
-
 /**
  * PostgreSQL Schema Manager.
  *
@@ -46,7 +43,7 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
     {
         $rows = $this->_conn->fetchAll("SELECT nspname as schema_name FROM pg_namespace WHERE nspname !~ '^pg_.*' and nspname != 'information_schema'");
 
-        return array_map(function ($v) { return $v['schema_name']; }, $rows);
+        return array_map(function($v) { return $v['schema_name']; }, $rows);
     }
 
     /**
@@ -104,33 +101,6 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
     /**
      * {@inheritdoc}
      */
-    public function dropDatabase($database)
-    {
-        try {
-            parent::dropDatabase($database);
-        } catch (DriverException $exception) {
-            // If we have a SQLSTATE 55006, the drop database operation failed
-            // because of active connections on the database.
-            // To force dropping the database, we first have to close all active connections
-            // on that database and issue the drop database operation again.
-            if ($exception->getSQLState() !== '55006') {
-                throw $exception;
-            }
-
-            $this->_execSql(
-                array(
-                    $this->_platform->getDisallowDatabaseConnectionsSQL($database),
-                    $this->_platform->getCloseActiveDatabaseConnectionsSQL($database),
-                )
-            );
-
-            parent::dropDatabase($database);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function _getPortableTableForeignKeyDefinition($tableForeignKey)
     {
         $onUpdate = null;
@@ -152,8 +122,8 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
         }
 
         return new ForeignKeyConstraint(
-            $localColumns, $foreignTable, $foreignColumns, $tableForeignKey['conname'],
-            array('onUpdate' => $onUpdate, 'onDelete' => $onDelete)
+                $localColumns, $foreignTable, $foreignColumns, $tableForeignKey['conname'],
+                array('onUpdate' => $onUpdate, 'onDelete' => $onDelete)
         );
     }
 
@@ -170,7 +140,7 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
      */
     protected function _getPortableViewDefinition($view)
     {
-        return new View($view['schemaname'].'.'.$view['viewname'], $view['definition']);
+        return new View($view['viewname'], $view['definition']);
     }
 
     /**
@@ -225,8 +195,7 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
                             'key_name' => $row['relname'],
                             'column_name' => trim($colRow['attname']),
                             'non_unique' => !$row['indisunique'],
-                            'primary' => $row['indisprimary'],
-                            'where' => $row['where'],
+                            'primary' => $row['indisprimary']
                         );
                     }
                 }
@@ -242,40 +211,6 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
     protected function _getPortableDatabaseDefinition($database)
     {
         return $database['datname'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function _getPortableSequencesList($sequences)
-    {
-        $sequenceDefinitions = array();
-
-        foreach ($sequences as $sequence) {
-            if ($sequence['schemaname'] != 'public') {
-                $sequenceName = $sequence['schemaname'] . "." . $sequence['relname'];
-            } else {
-                $sequenceName = $sequence['relname'];
-            }
-
-            $sequenceDefinitions[$sequenceName] = $sequence;
-        }
-
-        $list = array();
-
-        foreach ($this->filterAssetNames(array_keys($sequenceDefinitions)) as $sequenceName) {
-            $list[] = $this->_getPortableSequenceDefinition($sequenceDefinitions[$sequenceName]);
-        }
-
-        return $list;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getPortableNamespaceDefinition(array $namespace)
-    {
-        return $namespace['nspname'];
     }
 
     /**
@@ -422,17 +357,9 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
             'fixed'         => $fixed,
             'unsigned'      => false,
             'autoincrement' => $autoincrement,
-            'comment'       => isset($tableColumn['comment']) && $tableColumn['comment'] !== ''
-                ? $tableColumn['comment']
-                : null,
+            'comment'       => $tableColumn['comment'],
         );
 
-        $column = new Column($tableColumn['field'], Type::getType($type), $options);
-
-        if (isset($tableColumn['collation']) && !empty($tableColumn['collation'])) {
-            $column->setPlatformOption('collation', $tableColumn['collation']);
-        }
-
-        return $column;
+        return new Column($tableColumn['field'], \Doctrine\DBAL\Types\Type::getType($type), $options);
     }
 }

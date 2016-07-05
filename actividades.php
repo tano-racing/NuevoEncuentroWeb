@@ -27,7 +27,7 @@
     </head>
 
     <body>
-        <input id="BtnBuscar" type="file" name="imagen_img" accept="image/jpeg, image/jpg" style="position: absolute; left: 90999900px">
+        <input id="BtnBuscar" type="file" name="imagen_img" accept="image/jpeg" style="position: absolute; left: 90999900px">
         <div class="container">
             <div class="header clearfix">
                 <nav>
@@ -243,7 +243,7 @@
                 boostrap: true,
                 unico: true,
                 url: 'backend/actividades/crearActividad.php?esTaller=false',
-                urlEditar: 'backend/actividades/editarActividad.php',
+                urlEditar: 'backend/actividades/editarActividad.php?esTaller=false',
                 grabado: function (editando, data, index) {
                     tabla.bootstrapTable("refresh");
                 }

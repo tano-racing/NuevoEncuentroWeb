@@ -19,8 +19,8 @@
 
 namespace Doctrine\Common\Reflection;
 
-use Doctrine\Common\Annotations\TokenParser;
 use ReflectionException;
+use Doctrine\Common\Annotations\TokenParser;
 
 /**
  * Parses a file for namespaces/use/class declarations.
@@ -69,18 +69,18 @@ class StaticReflectionParser implements ReflectionProviderInterface
      *
      * @var array
      */
-    protected $useStatements = [];
+    protected $useStatements = array();
 
     /**
      * The docComment of the class.
      *
      * @var string
      */
-    protected $docComment = [
+    protected $docComment = array(
         'class' => '',
-        'property' => [],
-        'method' => []
-    ];
+        'property' => array(),
+        'method' => array()
+    );
 
     /**
      * The name of the class this class extends, if any.

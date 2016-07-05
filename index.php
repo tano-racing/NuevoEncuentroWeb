@@ -26,7 +26,7 @@
         <!-- Bootstrap core CSS -->
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/estilo.css" rel="stylesheet">
-        
+
         <script src="js/jquery-3.0.0.js"></script>
         <script src="js/jquery-ui.js"></script>
         <script src="js/bootstrap.js"></script>
@@ -36,8 +36,8 @@
         <script src="js/jquery.validationEngine-es.js"></script>
         <script src="js/tano.js"></script>
         <script src="js/magyp.js"></script>
-        
-        
+
+
     </head>
 
     <body>
@@ -77,6 +77,15 @@
                         <div class="form-group">
                             <label for="cuerpo">Cuerpo</label>
                             <textarea type="text"  class="form-control" id="cuerpo" placeholder="Cuerpo"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12" >
+                        <div class="form-group">
+                            <label for="actividades">Actividad</label>
+                            <select class="form-control" id="actividades">
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -178,6 +187,17 @@
                 $.post('enviar.php', {titulo: titulo, cuerpo: cuerpo}, function (data) {
                     inputs.prop('disabled', false);
                 });
+            });
+
+
+            var actividades = $("#actividades");
+            $.get("backend/actividades/listActividades.php", {fid: -1}, function (data) {
+                actividades.append("<option value='" + -1 + "'>" + "--No notificar actividades--" + "</option>")
+                console.log(data);
+                $.each(data, function (i, val) {
+                    actividades.append("<option value='" + val.idActividad + "'>" + val.nombre + " (" + val.descripcion + ")</option>")
+                });
+
             });
 
 

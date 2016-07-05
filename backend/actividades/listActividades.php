@@ -9,15 +9,17 @@ require_once '../../vendor/autoload.php';
 require_once "../../entities/Actividades.php";
 require_once "../../backend/config.php";
 
+header('Content-type: application/json');
+
 if (filter_has_var(INPUT_GET, "fid")) {
     $fid = filter_input(INPUT_GET, "fid");
-    $esTaller = filter_input(INPUT_GET, "esTaller");
+    $esTaller = filter_var(filter_input(INPUT_GET, "esTaller"), FILTER_VALIDATE_BOOLEAN);
 
     $buscar = "0";
     if ($esTaller == "true") {
         $buscar = "1";
     }
-    
+
     $actividadesRepo = $entityManager->getRepository('Actividades');
     $actividades = $actividadesRepo->findBy(array('esTaller' => $buscar)); //(Array("esTaller" => $esTaller));
 
